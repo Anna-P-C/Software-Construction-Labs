@@ -1,0 +1,81 @@
+class House:
+    def __init__(self, area=100, price=100000):
+
+        self._area = area
+        self._price = price
+
+    def final_price(self, discount=0):
+
+        return self._price * (1 - discount / 100)
+
+
+class SmallHouse(House):
+    def __init__(self):
+
+        super().__init__(area=40)
+
+
+class Human:
+    # Статичні атрибути
+    default_name = "John Doe"
+    default_age = 30
+
+    def __init__(self, name, age, money=0, house=None):
+
+        self.name = name
+        self.age = age
+        self.__money = money
+        self.__house = house
+
+    def info(self):
+
+        house_info = f"House(area={self.__house._area}, price={self.__house._price})" if self.__house else "No house"
+        print(f"Name: {self.name}, Age: {self.age}, Money: {self.__money}, House: {house_info}")
+
+    @staticmethod
+    def default_info():
+
+        print(f"Default name: {Human.default_name}, Default age: {Human.default_age}")
+
+    def __make_deal(self, house, price):
+
+        self.__money -= price
+        self.__house = house
+        print(f"{self.name} купив будинок площею {house._area} м2 за {price}.")
+
+    def earn_money(self, amount):
+
+        self.__money += amount
+        print(f"{self.name} заробив {amount}. Зараз має {self.__money}.")
+
+    def buy_house(self, house, discount=10):
+
+        price = house.final_price(discount)
+        if self.__money >= price:
+            self.__make_deal(house, price)
+        else:
+            print(f"{self.name} не вистачає грошей для покупки будинку! Потрібно {price}, а має {self.__money}.")
+
+
+
+Human.default_info()
+
+
+person = Human("Anna", 28)
+person.info()
+
+
+# Створення об'єкта класу SmallHouse
+small_house = SmallHouse()
+
+
+person.buy_house(small_house)
+
+
+person.earn_money(100000)
+
+
+person.buy_house(small_house)
+
+
+person.info()
